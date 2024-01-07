@@ -1,8 +1,10 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { PrismaClient } from '@prisma/client'
+import { UserService } from "./user.service";
 
 const prisma = new PrismaClient()
+const userService = new UserService(prisma);
 
 dotenv.config();
 
@@ -24,6 +26,11 @@ app.get("/", async (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
+app.get("/user/:id", async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const user = await userService.get(id);
+  res.json(user);
+});
 // app.listen(port, () => {
 //   console.log(`[server]: Server is running at http://localhost:${port}`);
 // });
