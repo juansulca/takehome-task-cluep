@@ -14,22 +14,28 @@ function App() {
       });
 
       const body = await res.json();
-      console.log(body);
       return body;
     }
   });
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [search, setSearch] = useState('');
 
   return (
     <div className="w-screen h-screen m-0 p-0 flex flex-col-reverse">
       <div className="w-[770px] h-[610px] mx-auto mb-8 border rounded-md border-gray-200 flex overflow-hidden">
         <Menu open={sidebarOpen} toggle={setSidebarOpen} />
         <div className="w-full h-full flex flex-col overflow-hidden">
-          <Search />
+          <Search search={search} setSearch={setSearch} />
           <div className="max-w-[630px] h-full mr-[70px] flex flex-col">
             <div className="w-full h-full">
-              {data && data.map(message => (<Message key={message.id} text={message.message} />))}
+              {data && search === '' && data.map((message: {id: string, message: string}) => (<Message key={message.id} text={message.message} />))}
+              {data && search !== '' && 
+                data
+                  .filter((message: {id: string, message: string}) => message.message.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                  .map((message: {id: string, message: string}) => (<Message key={message.id} text={message.message} />))}
+              {isFetching && <div className="w-full h-full flex justify-center items-center">Loading...</div>}
+              {error && <div className="w-full h-full flex justify-center items-center">Error</div>}
             </div>
             <div className="w-full h-10 mb-4 flex justify-between">
               <Task />

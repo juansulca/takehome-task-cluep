@@ -23,7 +23,7 @@ const SearchButton = ({ onClick }: { onClick: () => void }) => {
   );
 };
 
-export const Search = () => {
+export const Search = ({ search, setSearch }: { search: string, setSearch: (search: string) => void}) => {
   const [open, setOpen] = useState(false);
 
   if (open) {
@@ -36,8 +36,10 @@ export const Search = () => {
           type="text"
           placeholder="Search"
           className="flex-1 outline-none"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <div className="h-6 w-6 ml-2 text-gray-400" onClick={() => setOpen(false)}>
+        <div className="h-6 w-6 ml-2 text-gray-400" onClick={() => {setOpen(false); setSearch('')}}>
           <IconX size={24} />
         </div>
       </search>
