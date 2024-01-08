@@ -4,10 +4,12 @@ import cors from "cors";
 import { PrismaClient } from "@prisma/client"
 import { UserService } from "./user.service";
 import { MessageService } from "./message.service";
+import { UserHandler } from "./user.handler";
 
 const prisma = new PrismaClient()
 const userService = new UserService(prisma);
 const messageService = new MessageService(prisma);
+const userHandler = new UserHandler(userService, messageService);
 
 dotenv.config();
 
@@ -23,26 +25,16 @@ app.get("/", async (req: Request, res: Response) => {
 });
 
 app.get("/user/:id", async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const user = await userService.get(id);
-  res.json(user);
+  await userHandler.get(req, res);
 });
 
 app.get("/user/:id/messages", async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const messages = await messageService.getAll(id);
-  res.json(messages);
+  await userHandler.getAllMessages(req, res);
 });
 
 app.post("/user/:id/messages", async (req: Request<{ id: string }, {}, {message: string}>, res: Response) => {
-  const id = req.params.id;
-  const body = req.body;
-  const messages = await messageService.post({userId: id, ...body});
-  res.json(messages);
+  await userHandler.postMessage(req, res);
 });
-// app.listen(port, () => {
-//   console.log(`[server]: Server is running at http://localhost:${port}`);
-// });
 
 export default app;
 
