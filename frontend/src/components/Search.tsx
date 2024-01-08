@@ -8,7 +8,7 @@ import {
 
 const SearchButton = ({ onClick }: { onClick: () => void }) => {
   return (
-    <div className="w-full flex flex-row-reverse items-center bg-white mt-4 pr-4">
+    <div className="w-full h-7 flex flex-row-reverse items-center bg-white my-4 pr-4">
       <Tooltip>
         <TooltipTrigger>
           <div className="h-6 w-6 mr-2 text-black" onClick={onClick}>
@@ -28,7 +28,7 @@ export const Search = () => {
 
   if (open) {
     return (
-      <search className="flex items-center border-2 border-gray-200 rounded-full shadow-sm px-4 py-2 bg-white mt-4 mx-[70px] animate-slideIn">
+      <search className="flex items-center border-2 border-gray-200 rounded-full shadow-sm px-4 py-2 bg-white mt-4 mr-[70px] animate-slideIn">
         <div className="h-6 w-6 mr-2 text-gray-200">
           <IconSearch size={24} />
         </div>
